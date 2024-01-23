@@ -1,0 +1,59 @@
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <atom:link href="https://www.abc.net.au/local/photos/2014/05/26/4012255-mediarss.xml" rel="self" type="application/rss+xml"/>
+        <title>Mittagong Greeny Flat shows eco-living made easy</title>
+        <link>https://www.abc.net.au/local/photos/2014/05/26/4012255.htm</link>
+        <description></description>
+        <copyright>2010, Australian Broadcasting Corporation</copyright>
+        <language>en-au</language>
+        <ttl>15</ttl>
+        <pubDate>Mon, 26 May 2014 15:18:00 +1000</pubDate>
+        <item>
+            <guid isPermaLink="false">https://www.abc.net.au/media-resource-id-1280295</guid>
+            <description>Andy Lemann in front of his environmentally sustainable Greeny Flat in Mittagong.</description>
+            <title>Andy Lemann Greeny Flat</title>
+            <pubDate>Mon, 26 May 2014 15:18:00 +1000</pubDate>
+            <link>https://www.abc.net.au/local/photos/2014/05/26/4012255.htm</link>
+            <category domain="https://www.abc.net.au/local/image/">ABC Illawarra NSW</category>
+            <media:group>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329756.jpg" type="image/jpg" width="80" height="60"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329768.jpg" type="image/jpg" width="100" height="56"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329763.jpg" type="image/jpg" width="70" height="70"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329773.jpg" type="image/jpg" width="100" height="67"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329778.jpg" type="image/jpg" width="100" height="75"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329767.jpg" type="image/jpg" width="160" height="90"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329788.jpg" type="image/jpg" width="100" height="100"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329772.jpg" type="image/jpg" width="160" height="107"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329777.jpg" type="image/jpg" width="160" height="120"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329783.jpg" type="image/jpg" width="100" height="133"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329755.jpg" type="image/jpg" width="150" height="150"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329787.jpg" type="image/jpg" width="160" height="160"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329766.jpg" type="image/jpg" width="220" height="124"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329771.jpg" type="image/jpg" width="220" height="147"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329776.jpg" type="image/jpg" width="220" height="165"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329782.jpg" type="image/jpg" width="160" height="213"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329786.jpg" type="image/jpg" width="220" height="220"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329761.jpg" type="image/jpg" width="285" height="190"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329760.jpg" type="image/jpg" width="285" height="192"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329757.jpg" type="image/jpg" width="315" height="180"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329765.jpg" type="image/jpg" width="340" height="191"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329781.jpg" type="image/jpg" width="220" height="293"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329770.jpg" type="image/jpg" width="340" height="227"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329775.jpg" type="image/jpg" width="340" height="255"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329785.jpg" type="image/jpg" width="340" height="340"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329762.jpg" type="image/jpg" width="450" height="304"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329780.jpg" type="image/jpg" width="340" height="453"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329758.jpg" type="image/jpg" width="600" height="405"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329764.jpg" type="image/jpg" width="700" height="394"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329784.jpg" type="image/jpg" width="700" height="700"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329769.jpg" type="image/jpg" width="700" height="467"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329774.jpg" type="image/jpg" width="700" height="525"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329759.jpg" type="image/jpg" width="840" height="567"/>
+                <media:content url="https://www.abc.net.au/reslib/201405/r1280295_17329779.jpg" type="image/jpg" width="700" height="933"/>
+            </media:group>
+            <media:thumbnail url="https://www.abc.net.au/reslib/201405/r1280295_17329773.jpg" width="100" height="67"/>
+            <media:player url="https://www.abc.net.au/local/photos/2014/05/26/4012255.htm"/>
+            <media:copyright>ABC: Justin Huntsdale</media:copyright>
+        </item>
+    </channel>
+</rss>

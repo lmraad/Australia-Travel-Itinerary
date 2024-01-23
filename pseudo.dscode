@@ -1,0 +1,201 @@
+/////////////////////////////////////////////////////////////////
+///////////////////// RETRIEVING A STORY ////////////////////////
+/////////////////////////////////////////////////////////////////
+
+//Obtaining a story based on a selected location from the API
+//and presenting media associated with the story to the user
+
+//The packages then-jsonp, sync-fetch, and jxon are used.
+//The variable "placeID" exists, which is the ID of the selected story
+
+FUNCTION retrieveStory (placeID)
+BEGIN
+
+    DECLARE url = `https://data.gov.au/data/api/3/action/datastore_search_sql?sql=SELECT "Place", "State", "Title", "Date", "Primary image caption", "URL", "MediaRSS URL" from "d73f2a2a-c271-4edd-ac45-25fd7ad2241f" WHERE "_id"=placeID`
+
+    //The package then-jsonp is used in the below line
+    //to convert the returned result from JSONP to JSON
+    DECLARE result = jsonp(CALL API using url)
+
+    //Data is returned asynchronously from the API and a
+    //callback function (processData) is executed below
+    //This callback function, when complete, will send data
+    //back to be rendered
+    WHEN result returned THEN 
+        DECLARE storyData = CALL processData(result)
+        RETURN storyData
+    END WHEN
+
+END
+
+FUNCTION processData(data)
+BEGIN
+
+    //data.result.records is an array containing all of the results
+    //from the API query (in this case, there should only be one
+    //result, as stories with a specified ID were requested)
+    DECLARE storyInfo = data.result.records
+
+    //Converting XML data to JSON
+    //The 'MediaRSS URL' is a field in the returned results, which
+    //contains an XML link, with access to more data for the story
+
+    //In the below code, the package sync-fetch is used to synchronously
+    //retrieve data from the specified url
+    DECLARE xmlData = fetch(data.result.records[0]['MediaRSS URL']).text()
+    //The jxon package is then also used below to convert the retrieved
+    //XML data to JSON
+    DECLARE xmlObject = jxon.stringToJs(xmlData)
+
+    //Finding the thumbnail image
+    DECLARE thumbnail = xmlObject.rss.channel.item[0]['media:thumbnail']['$url']
+    PUSH thumbnail INTO storyInfo
+
+    //Finding the audio links
+    DECLARE audio = []
+    //Looping through each of the story's "items"...
+    FOR i = 0 TO xmlObject.rss.channel.item LENGTH STEP 1
+
+        //If there is media content that isn't located in a media group...
+        IF xmlObject.rss.channel.item[i]['media:content'] !== undefined THEN
+            IF xmlObject.rss.channel.item[i]['media:content']['$type'].includes("audio") = true THEN
+                PUSH xmlObject.rss.channel.item[i]['media:content']['$url'] INTO audio
+            ENDIF
+        ENDIF
+
+    NEXT i
+    ENDFOR
+
+    PUSH audio INTO storyInfo
+
+    RETURN storyInfo
+    
+END
+
+/////////////////////////////////////////////////////////////////
+/////////////////// RETRIEVING COORDINATES //////////////////////
+/////////////////////////////////////////////////////////////////
+
+//Obtaining the latitudes and longitudes of all stories from
+//the API, and returning them ready to be presented on a map
+
+//The variable "userID" exists, which is the ID of the
+//user who is currently logged in
+
+FUNCTION retrieveCoords (userID)
+BEGIN
+
+    DECLARE url = `https://data.gov.au/data/api/3/action/datastore_search_sql?sql=SELECT "_id", "Longitude", "Latitude" from "d73f2a2a-c271-4edd-ac45-25fd7ad2241f"`
+
+    //The package then-jsonp will again be used below
+    //to convert the returned result from JSONP and JSON
+    DECLARE result = jsonp(CALL API using url)
+
+    //Again, data is returned asynchronously from the API
+    //and a callback function (getMapData) is executed
+    //This callback function, when complete, will send data
+    //back to be rendered
+    WHEN result returned THEN 
+        DECLARE mapData = CALL getMapData(result)
+        RETURN mapData
+    END WHEN
+
+END
+
+FUNCTION getMapData(data)
+BEGIN
+    DECLARE lon = []
+    DECLARE lat = []
+    DECLARE colours = []
+
+    //Looping through each story...
+    FOR i = 0 TO data.result.records LENGTH STEP 1
+        
+        DECLARE id = data.result.records[i]['_id'] //The story's ID
+        
+        //Below array is like:
+        //[ {COMPLETED: 'Y'}, {COMPLETED: 'N'} ] for each location
+        DECLARE userCompleted = 
+            SQL RESULT FROM
+                "SELECT COMPLETED
+                FROM TRIPS
+                WHERE PLACE_ID = ? AND USER_ID = ?"
+            WITH PREPARED QUERY VALUES id, userID
+
+        //if the story is in one of the lists...
+        IF userCompleted LENGTH > 0 THEN
+            DECLARE pastTrip = true
+
+            FOR j = 0 TO userCompleted LENGTH STEP 1
+                //if the story is in the itinerary at all...
+                IF userCompleted[j].COMPLETED = 'N' THEN
+                    PUSH "(itinerary colour)" INTO colours
+                    pastTrip = false
+                ENDIF
+            NEXT j
+            ENDFOR
+
+            //if the story is in the past trips list...
+            IF pastTrip = true THEN
+                PUSH "(past trips colour)" INTO colours
+            ENDIF
+        
+        //if the story isn't saved by the user at all...
+        ELSE
+            PUSH "(other places colour)" INTO colours
+        ENDIF
+
+        PUSH data.result.records[i]['Longitude'] INTO lon
+        PUSH data.result.records[i]['Latitude'] INTO lat
+    NEXT i
+    ENDFOR
+
+    DECLARE mapInfo = []
+    PUSH lon INTO mapInfo
+    PUSH lat INTO mapInfo
+    PUSH colours INTO mapInfo
+
+    RETURN mapInfo
+
+END
+
+/////////////////////////////////////////////////////////////////
+////////////////////// LOGGING IN A USER ////////////////////////
+/////////////////////////////////////////////////////////////////
+
+//Securely logging in a user to the application
+
+//The package bcrypt is used, and the variable "saltRounds"
+//exists, equal to 10, to be used with this package.
+
+//The variables "username" and "password" are the user's
+//inputted username and password.
+
+FUNCTION logIn (username, password)
+BEGIN
+
+    DECLARE hashedPassword
+    //The package bcrypt is used below to hash the inputted password
+    bcrypt.hash(password, saltRounds, FUNCTION(err, hash) BEGIN
+        hashedPassword = hash
+    END)
+
+    DECLARE userInfo =
+        SQL RESULT FROM
+            "SELECT ID
+            FROM USERS
+            WHERE USERNAME = ? AND PASSWORD = ?"
+        WITH PREPARED QUERY VALUES username, hashedPassword
+
+    IF userInfo LENGTH = 0 THEN
+        //Renders the log in/sign up page again
+        DECLARE error = "Invalid login credentials."
+        RETURN RENDER reponse "signIn.hbs", {error}
+    ELSE
+        //The function renderItinerary renders the user's itinerary page
+        DECLARE userID = userInfo[0].ID
+        renderItinerary(userID)
+        RETURN
+    ENDIF
+
+END

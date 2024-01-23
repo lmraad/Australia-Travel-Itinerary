@@ -1,0 +1,83 @@
+<form method="POST" action="/logOut">
+    <button class="logOutButton" type="submit">Log out</button>
+</form>
+
+<div class="otherTitle"><b>Past Trips:</b></div>
+
+<div class="filterPopup">
+    <div class="formPopup" id="popupForm">
+        <div class="formContainer">
+            <form method="POST" action="/itinerary">
+                <button class="menuButton" type="submit">
+                    <img src="images/itinerary.png" width="39" height="41.5"> <!-- 78x83 times0.5/-->
+                    <br>Itinerary
+                </button>
+            </form>
+            <form method="POST" action="/pastTrips">
+                <button class="menuButton" type="submit">
+                    <img src="images/past_trips.png" width="45" height="42.5"> <!-- 90x85 /-->
+                    <br>Past Trips
+                </button>
+            </form>
+            <form method="POST" action="/map">
+                <button class="menuButton" type="submit">
+                    <img src="images/map.png" width="39" height="39"> <!-- 78x78 /-->
+                    <br>Map
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{#each listItems}}
+    <div class="date">{{this.AU_DATE}}</div>
+    <div class="mainInfoBox">
+        <div>
+            {{this.PLACE}}, {{this.STATE}}
+        </div>
+        <div class="localStoryAndDate">
+            Local Story:
+            <div>({{this.DATE_PUBLISHED}})</div>
+        </div>
+        <div><b>{{this.TITLE}}</b></div>
+        <div class="imageAndDescription">
+            <div class="thumbnailImage">
+                <img src={{this.THUMBNAIL}} width="140" height="93.8"> <!-- x1.4 from 100x67 /-->
+            </div>
+            {{this.DESCRIPTION}}
+        </div>
+        <div class="links">
+            {{#if this.AUDIO}}
+                <audio controls class="audio">
+                    <source src={{this.AUDIO}} type="audio/mpeg">
+                </audio>
+            {{/if}}
+
+            <a href={{this.URL}}>Visit the article now</a>
+        </div>
+
+        <div class="removeAndUpdateBox">
+            <form method="POST" action="/removeLocation">
+                <input name="tripID" value={{this.ID}} hidden>
+                <input name="listType" value="pastTrips" hidden>
+                <button class="removeButton" type="Submit">REMOVE</button>
+            </form>
+
+            <div class="changeDateBox">
+                <form method="POST" action="/changeDate">
+                    Change Date:
+                    <input name="tripID" value={{this.ID}} hidden>
+                    <input name="listType" value="pastTrips" hidden>
+                    <input class="dateInput" type="date" name="date" value={{this.DATE}}>
+                    <button class="changeDateButton" type="Submit">GO</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{{/each}}
+
+{{#if nothingMessage}}
+    <p class="nothingMessage">{{nothingMessage}}</p>
+{{/if}}
+
+<div class="long"></div>

@@ -1,0 +1,95 @@
+<!-- This imports the plotly.js library from a Content Distribution Network (cdn) -->
+<script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
+
+<form method="POST" action="/logOut">
+    <button class="logOutButton" type="submit">Log out</button>
+</form>
+
+<div class="otherTitle"><b>Map:</b></div>
+
+<form method="POST" action="/searchResults">
+    <div class="searchBox">
+        <input class="searchBar" list="list" name="locationSearch" placeholder="Search locations...">
+        <button class="searchImage" type="submit">
+            <img src="images/search.png" width="44" height="44"> <!-- 1.01x1.01 originally/-->
+        </button>
+
+        <datalist id="list">
+            {{#each places}}
+                <option value="{{this.PLACE}}"></option>
+            {{/each}}
+        </datalist>
+    </div>
+</form>
+
+<div id="map"></div>
+
+<div class="filterPopup">
+    <div class="formPopup" id="popupForm">
+        <div class="formContainer">
+            <form method="POST" action="/itinerary">
+                <button class="menuButton" type="submit">
+                    <img src="images/itinerary.png" width="39" height="41.5"> <!-- 78x83 times0.5/-->
+                    <br>Itinerary
+                </button>
+            </form>
+            <form method="POST" action="/pastTrips">
+                <button class="menuButton" type="submit">
+                    <img src="images/past_trips.png" width="45" height="42.5"> <!-- 90x85 /-->
+                    <br>Past Trips
+                </button>
+            </form>
+            <form method="POST" action="/map">
+                <button class="menuButton" type="submit">
+                    <img src="images/map.png" width="39" height="39"> <!-- 78x78 /-->
+                    <br>Map
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    /////////////////////////////////////MAP/////////////////////////////////////////
+    //these arrays could be imported into a hbs file...
+    let labelsArray = {{{titles}}}
+    let longitudeArray = [{{{lon}}}]
+    let latitudeArray = [{{{lat}}}]
+
+    //define the type of map or graph the plotly should generate
+    let data = [{
+        type: "scattermapbox",
+        hoverinfo: "text",  //text here refers to the key/value on the next line -- comment this to 'skip' if you don't want hovertext
+        text: labelsArray,
+        lon: longitudeArray,
+        lat: latitudeArray,
+        marker: {
+            color: [
+                {{{colours}}}
+            ],
+            size: 20
+        }
+    }];
+
+    let layout = {
+        mapbox: {
+            style: "open-street-map",
+            center: {
+                lon: {{{centreLon}}},
+                lat: {{{centreLat}}}
+            },
+            zoom: {{{centreZoom}}}
+        },
+        margin: {
+            l: 0,
+            r: 0,
+            b: 0,
+            t: 0
+        }
+    };
+
+    //execute the plot
+    Plotly.newPlot('map', data, layout)
+
+</script>

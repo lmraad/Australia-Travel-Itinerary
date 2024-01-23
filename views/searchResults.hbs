@@ -1,0 +1,93 @@
+<div class="topBox">
+    <form method="POST" action="/map">
+        <button class="backToMapArrow" type="submit">
+            <b>←</b>
+        </button>
+    </form>
+
+    <form method="POST" action="/logOut">
+        <button class="logOutButton specialLogOutButton" type="submit">Log out</button>
+    </form>
+</div>
+
+<div class="otherTitle resultsTitle"><b>{{{locationSearch}}}</b></div>
+
+<div class="filterPopup">
+    <div class="formPopup" id="popupForm">
+        <div class="formContainer">
+            <form method="POST" action="/itinerary">
+                <button class="menuButton" type="submit">
+                    <img src="images/itinerary.png" width="39" height="41.5"> <!-- 78x83 times0.5/-->
+                    <br>Itinerary
+                </button>
+            </form>
+            <form method="POST" action="/pastTrips">
+                <button class="menuButton" type="submit">
+                    <img src="images/past_trips.png" width="45" height="42.5"> <!-- 90x85 /-->
+                    <br>Past Trips
+                </button>
+            </form>
+            <form method="POST" action="/map">
+                <button class="menuButton" type="submit">
+                    <img src="images/map.png" width="39" height="39"> <!-- 78x78 /-->
+                    <br>Map
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{#each resultItems}}
+    <div class="mainInfoBox resultsInfoBox">
+        <div>
+            {{this.PLACE}}, {{this.STATE}}
+        </div>
+        <div class="localStoryAndDate">
+            Local Story:
+            <div>({{this.DATE_PUBLISHED}})</div>
+        </div>
+        <div><b>{{this.TITLE}}</b></div>
+        <div class="imageAndDescription">
+            <div class="thumbnailImage">
+                <img src={{this.THUMBNAIL}} width="140" height="93.8"> <!-- x1.4 from 100x67 /-->
+            </div>
+            {{this.DESCRIPTION}}
+        </div>
+        <div class="links">
+            {{#if this.AUDIO}}
+                <audio controls class="audio">
+                    <source src={{this.AUDIO}} type="audio/mpeg">
+                </audio>
+            {{/if}}
+
+            <a href={{this.URL}}>Visit the article now</a>
+        </div>
+
+        <div class="addToText">Add to:</div>
+        <div class="addToBox">
+            <form method="POST" action="/addTo">
+                <input name="locationID" value={{this.ID}} hidden>
+                <input name="completed" value="N" hidden>
+                <button class="addToButton" type="submit">
+                    <img class="addImage" src="images/add.png" width="25" height="25">
+                    Itinerary
+                </button>
+            </form>
+            <form method="POST" action="/addTo">
+                <input name="locationID" value={{this.ID}} hidden>
+                <input name="completed" value="Y" hidden>
+                <button class="addToButton" type="submit">
+                    <img class="addImage" src="images/add.png" width="25" height="25">
+                    Past Trips
+                </button>
+            </form>
+        </div>
+        
+    </div>
+{{/each}}
+
+{{#if nothingMessage}}
+    <p class="nothingMessage">{{nothingMessage}}</p>
+{{/if}}
+
+<div class="long"></div>
